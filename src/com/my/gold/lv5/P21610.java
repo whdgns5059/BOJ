@@ -3,10 +3,7 @@ package com.my.gold.lv5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class P21610 {
 
@@ -117,8 +114,8 @@ public class P21610 {
                         cloud[0] = toUpOrLeft(r, n);
                         break;
                     case 4://↗
-                        cloud[0] = toDownOrRight(r, n);
-                        cloud[1] = toUpOrLeft(c, n);
+                        cloud[0] = toUpOrLeft(r, n);
+                        cloud[1] = toDownOrRight(c, n);
                         break;
                     case 5://→
                         cloud[1] = toDownOrRight(c, n);
@@ -247,13 +244,6 @@ public class P21610 {
             grid.copyWater();
             grid.setCloud();
 
-            for(int i = 0 ; i < n ; i++){
-                for(int j = 0 ; j < n ; j++){
-                    System.out.print(grid.baskets[i][j].getWater() + ", ");
-                }
-                System.out.println("");
-            }
-            System.out.println("----");
         }
 
         int totalWater = grid.getTotalWater();
