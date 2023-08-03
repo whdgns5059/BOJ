@@ -45,10 +45,17 @@ public class P21610 {
         public void increaseWater(int water){
             this.water += water;
         }
+        public void decreaseWater(int water){
+            this.water -= water;
+        }
 
 
         public int getWater() {
             return water;
+        }
+
+        public boolean hasWater() {
+            return water > 0;
         }
     }
 
@@ -57,6 +64,7 @@ public class P21610 {
 
         private Basket[][] baskets;
         private List<int[]> cloudPositions;
+        private List<int[]> deletedCloud;
         int n;
 
         public Grid(int n, int[][] A){
@@ -153,19 +161,62 @@ public class P21610 {
         //3. 구름이 모두 사라진다.
         //(4단계에서 물복사를 해야 하기 때문에 구름을 없애지 않고, 5직전에 없앤다)
         public void clearCloud() {
+            deletedCloud = List.copyOf(cloudPositions);
             cloudPositions = new ArrayList<>();
         }
 
         //4. 물이 증가한 칸에 물복사(대각선 칸에 물있으면 각각 +1씩)해서 더함.
         public void copyWater() {
-            for(int i = 0 ; i < cloudPositions.size() ; i++){
-                int[] cloud = cloudPositions.get(i);
+            for(int i = 0 ; i < deletedCloud.size() ; i++){
+                int[] cloud = deletedCloud.get(i);
                 int r = cloud[0];
                 int c = cloud[1];
 
+                int counter = waterInDiagonalBasket(r - 1, c - 1)
+                + waterInDiagonalBasket(r - 1 , c + 1)
+                + waterInDiagonalBasket(r + 1, c - 1)
+                + waterInDiagonalBasket(r + 1 , c + 1);
+
+                baskets[r][c].increaseWater(counter);
 
             }
         }
+
+        //대각선 방향의 바스켓 확인후 있으면 1 없으면 0
+        private int waterInDiagonalBasket(int r, int c) {
+            if(r < 0 || c < 0 || r > n - 1 || c > n - 1){
+                return 0;
+            }
+            if(baskets[r][c].hasWater()){
+                return 1;
+            }
+            return 0;
+        }
+
+        //5. 물의 양의 2 이상인 모든 칸에 구름 만들고 -2,
+        //단 구름이 없던 칸에 만들어야 함.
+        public void setCloud() {
+
+            //물이 2이상인 칸에 구름 만들기(삭제 된 위치 빼고)
+            for(int r = 0 ; r < n ; r++){
+                for(int c = 0 ; c < n ; c++){
+                    if(baskets[r][c].getWater() >= 2 && !isDeleteCloudPosition(r,c)){
+                        baskets[r][c].decreaseWater(2);
+                        cloudPositions.add(new int[]{r, c});
+                    }
+                }
+            }
+        }
+
+        private boolean isDeleteCloudPosition(int r, int c) {
+            for(int[] cloud : deletedCloud){
+                if(cloud[0] == r && cloud[1] == c){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public int getTotalWater() {
             int result = 0;
             for(Basket[] basketRow : baskets){
@@ -175,6 +226,7 @@ public class P21610 {
             }
             return result;
         }
+
     }
 
 
@@ -191,9 +243,17 @@ public class P21610 {
         for(Direct direct : directs){
             grid.moveCloudsDirection(direct);
             grid.makeItRain();
-            grid.copyWater();  // 물복사 할때 구름 위치를 기억하고 있어야 하므로 구름지우기는 4단계 이후 실행.
             grid.clearCloud();
-//            grid.setCloud();
+            grid.copyWater();
+            grid.setCloud();
+
+            for(int i = 0 ; i < n ; i++){
+                for(int j = 0 ; j < n ; j++){
+                    System.out.print(grid.baskets[i][j].getWater() + ", ");
+                }
+                System.out.println("");
+            }
+            System.out.println("----");
         }
 
         int totalWater = grid.getTotalWater();
