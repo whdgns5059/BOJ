@@ -1,4 +1,4 @@
-package com.my.gold.lv5;
+package com.my.gold.lv4;
 
 import java.io.BufferedReader;
 import java.io.IOException;

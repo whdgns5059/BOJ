@@ -31,46 +31,13 @@ public class P10816 {
 
         for(int i = 0 ; i < mArr.length ; i++){
 
-            int left = 0;
-            int right = n;
-            while(left +1 < right){
+            int hi = lowerbound(nArr, mArr[i]);
+            int low = upperbound(nArr, mArr[i]);
 
-                if(left + 1 == right){
-                    break;
-                }
-
-                int mid = (left + right) /2;
-                if(nArr[mid] == mArr[i]){
-                    left = mid;
-                    break;
-                }else if(nArr[mid] < mArr[i]){
-                    left = mid;
-                }else{
-                    right = mid;
-                }
-            }
-
-
-            if(nArr[left] == mArr[i]){
-               int count = 0;
-               int upper = left;
-               while(nArr[upper] == mArr[i]){
-                   count++;
-                   if(upper++ >= n-1){
-                       break;
-                   }
-               }
-               int lower = left > 0 ? left - 1 : left;
-                while(nArr[lower] == mArr[i] && left > 0){
-                    count++;
-                    if(lower-- == 0){
-                        break;
-                    }
-                }
-               counter[i] = count;
-            }
+            counter[i] = low - hi;
 
         }
+
 
         StringBuilder sb = new StringBuilder();
         for(int i : counter){
@@ -81,4 +48,30 @@ public class P10816 {
         System.out.println(sb.toString());
 
     }
+
+    private static int lowerbound(long[] nArr, long l) {
+        int lo = -1, hi = n;
+        while(lo + 1 < hi){
+            int mid = (lo+hi)/2;
+            if(!(nArr[mid] >= l)){
+                lo = mid;
+            }else{
+                hi = mid;
+            }
+        }
+        return hi;
+    }
+    private static int upperbound(long[] nArr, long l) {
+        int lo = -1, hi = n;
+        while(lo + 1 < hi){
+            int mid = (lo+hi)/2;
+            if(!(nArr[mid] > l)){
+                lo = mid;
+            }else{
+                hi = mid;
+            }
+        }
+        return hi;
+    }
+
 }
