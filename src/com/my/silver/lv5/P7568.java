@@ -13,31 +13,53 @@ public class P7568 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        int[][] peoples = new int[n][2];
+        Person[] peoples = new Person[n];
 
         StringTokenizer st;
         for(int i = 0 ; i < n ; i++){
             st = new StringTokenizer(br.readLine());
-            peoples[i][0] = Integer.parseInt(st.nextToken());
-            peoples[i][1] = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
+            int height = Integer.parseInt(st.nextToken());
+            peoples[i] = new Person(weight, height);
         }
 
-        int[] ranks = new int[n];
-        Arrays.fill(ranks, n);
-        for(int i = 1; i < n ; i++){
-            int[] p = peoples[i];
+        for(int i = 0; i < n ; i++){
+            Person p = peoples[i];
+
             for(int j = 0 ; j < n ; j++){
+                if(i == j){
+                    continue;
+                }
 
-
+                Person p2 = peoples[j];
+                if(p.isSmall(p2)){
+                    p.rank++;
+                }
 
             }
         }
 
-        for(int i : ranks){
-            System.out.println(i);
+        for(Person p : peoples){
+            System.out.println(p.rank);
         }
+
 
 
     }
 
+    private static class Person {
+        int weight;
+        int height;
+        int rank;
+
+        public Person(int weight, int height) {
+            this.weight = weight;
+            this.height = height;
+            rank = 1;
+        }
+
+        public boolean isSmall(Person p2) {
+            return this.weight < p2.weight && this.height < p2.height;
+        }
+    }
 }
