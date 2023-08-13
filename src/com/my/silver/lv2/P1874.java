@@ -3,13 +3,11 @@ package com.my.silver.lv2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
-import java.util.stream.IntStream;
+import java.util.*;
 
 public class P1874 {
+    static List<String> resultList;
+    static Stack<Integer> stack;
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,22 +18,43 @@ public class P1874 {
             sequence[i] = Integer.parseInt(br.readLine());
         }
 
-        Stack<Integer> stack = new Stack<>();
+        resultList = new ArrayList<>();
+        stack = new Stack<>();
 
-        int num = 1;
-        int[] result = new int[n];
-        List<String> resultList = new ArrayList<>();
+        int sIndex = 0;
+        int number = 1;
+        while(sIndex < n){
 
-        for(int i = 1 ; i <= n ; i++ ){
+            int sNum = sequence[sIndex++];
 
+            while(number <= sNum){
+                add(number++);
+            }
 
+            if(!stack.isEmpty()){
+                if(stack.peek() != sNum){
+                    System.out.println("NO");
+                    return;
+                }
+                pop();
+            }
 
         }
+        StringBuilder sb = new StringBuilder();
+        for(String s : resultList){
+            sb.append(s).append("\n");
+        }
 
-        System.out.println(Arrays.toString(result));
+        System.out.println(sb);
+    }
 
+    static void add(int num){
+        resultList.add("+");
+        stack.add(num);
+    }
 
-
-
+    static int pop(){
+        resultList.add("-");
+        return stack.pop();
     }
 }
