@@ -13,11 +13,11 @@ public class P1874 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
+
         int[] sequence = new int[n];
         for(int i = 0 ; i < n ; i++){
             sequence[i] = Integer.parseInt(br.readLine());
         }
-
         resultList = new ArrayList<>();
         stack = new Stack<>();
 
@@ -57,4 +57,6 @@ public class P1874 {
         resultList.add("-");
         return stack.pop();
     }
+
+
 }
