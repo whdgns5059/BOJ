@@ -1,4 +1,4 @@
-package com.my.backjoon.bronze;
+package com.my.backjoon.bronze.lv3;
 
 import java.util.Scanner;
 

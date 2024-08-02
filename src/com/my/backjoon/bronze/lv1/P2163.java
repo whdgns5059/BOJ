@@ -1,15 +1,16 @@
-package com.my.backjoon.bronze;
+package com.my.backjoon.bronze.lv1;
 
 import java.util.Scanner;
 
-public class P2447 {
+public class P2163 {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt();
+        int m = sc.nextInt();
 
+        System.out.println(n*m-1);
 
     }
-
 }
